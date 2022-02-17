@@ -3,18 +3,21 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bottom_navigationbar/models/camera_state.dart';
+import 'package:flutter_bottom_navigationbar/models/gallery_state.dart';
 import 'package:flutter_bottom_navigationbar/widgets/my_gallery.dart';
 import 'package:flutter_bottom_navigationbar/widgets/take_photo.dart';
 import 'package:provider/provider.dart';
 
 class CameraScreen extends StatefulWidget {
   CameraState _cameraState = CameraState();
+  GalleryState _galleryState = GalleryState();
 
   CameraScreen({Key? key}) : super(key: key);
 
   @override
   _CameraScreenState createState() {
     _cameraState.getReadyToTakePhoto();
+    _galleryState.initProvider();
     return _CameraScreenState();
   }
 }
@@ -39,14 +42,13 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log('y_log : camera_screen.dart_build 11111');
-    log('y_log : camera_screen.dart_build ${widget._cameraState}');
     return MultiProvider(
       providers: [
         // getReadyToPhoto를 실행하기 위해서 value 값으로 던져줌.
         // 여러개의 provider전달은 가능하지만 타입은 한가지만 받을 수 있다.
         // 위의 provider를 주는 이유는 getReadyToTakePhoto를 실행을 미리 하기 위해서
         ChangeNotifierProvider<CameraState>.value(value: widget._cameraState),
+        ChangeNotifierProvider<GalleryState>.value(value: widget._galleryState),
         //아래로 써도 된다고 함.
         //ChangeNotifierProvider<CameraState>(create: (context) => CameraState())
       ],

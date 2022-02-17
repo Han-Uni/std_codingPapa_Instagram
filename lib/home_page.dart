@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
@@ -71,8 +72,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _openCamera() async {
-    log('### y_log : home_page.dart_openCamera 2222');
-
     if (await checkIfPermissionGranted(context)) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => CameraScreen()));
@@ -92,8 +91,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<bool> checkIfPermissionGranted(BuildContext context) async {
-    Map<Permission, PermissionStatus> statuses =
-        await [Permission.camera, Permission.microphone].request();
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.camera,
+      Permission.microphone,
+      Permission.photos
+    ].request();
     bool permitted = true;
 
     statuses.forEach((permission, permissionStatus) {
