@@ -7,8 +7,6 @@ import 'package:flutter_bottom_navigationbar/constants/screen_size.dart';
 import 'package:flutter_bottom_navigationbar/models/camera_state.dart';
 import 'package:flutter_bottom_navigationbar/screens/share_post_screen.dart';
 import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 
 class TakePhoto extends StatefulWidget {
