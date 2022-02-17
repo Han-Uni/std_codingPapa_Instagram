@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bottom_navigationbar/models/camera_state.dart';
+import 'package:flutter_bottom_navigationbar/widgets/my_gallery.dart';
 import 'package:flutter_bottom_navigationbar/widgets/take_photo.dart';
 import 'package:provider/provider.dart';
 
@@ -90,9 +91,7 @@ class _CameraScreenState extends State<CameraScreen> {
             });
           },
           children: <Widget>[
-            Container(
-              color: Colors.tealAccent,
-            ),
+            MyGallery(),
             TakePhoto(),
             Container(
               color: Colors.lightGreenAccent,
