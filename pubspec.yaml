@@ -41,6 +41,7 @@ dependencies:
   provider: ^6.0.2
   path: ^1.8.0
   path_provider: ^2.0.9
+  local_image_provider: ^4.0.1
 
 dev_dependencies:
   flutter_test:
