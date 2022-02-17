@@ -1,0 +1,10 @@
+const double common_double_xxl_gap = 90.0;
+const double common_double_xl_gap = 60.0;
+const double common_xxl_gap = 45.0;
+const double common_xl_gap = 30.0;
+const double common_l_gap = 16.0;
+const double common_gap = 14.0;
+const double common_s_gap = 12.0;
+const double common_xs_gap = 10.0;
+const double common_xxs_gap = 8.0;
+const double avatar_size = 30.0;
