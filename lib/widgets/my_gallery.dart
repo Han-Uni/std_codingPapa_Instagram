@@ -60,7 +60,12 @@ class _MyGalleryState extends State<MyGallery> {
               } catch (e) {}
               ;
             },
-            child: Image(image: DeviceImage(localImage))))
+            child: Image(
+              // 기본 scale : 1이기 때문에 메모리를 너무 많이 차지하여 scale로 0.1 또는 0.2로 변경해주면 메모리 이슈는 사라짐.
+              image: DeviceImage(localImage, scale: 0.2),
+              // 이미지를 정사각형에 꽉차면서 짤리는 부분은 안보이게 해줄때 사용
+              fit: BoxFit.cover,
+            )))
         .toList();
   }
 }
