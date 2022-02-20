@@ -7,6 +7,7 @@ import 'package:flutter_bottom_navigationbar/constants/screen_size.dart';
 import 'package:flutter_bottom_navigationbar/screens/camera_screen.dart';
 import 'package:flutter_bottom_navigationbar/screens/feed_screen.dart';
 import 'package:flutter_bottom_navigationbar/screens/profile_screen.dart';
+import 'package:flutter_bottom_navigationbar/screens/search_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
 
   static final List<Widget> _screens = <Widget>[
     FeedScreen(),
-    Container(color: Colors.deepPurpleAccent),
+    SearchScreen(),
     Container(color: Colors.indigoAccent),
     Container(color: Colors.limeAccent),
     ProfileScreens(),
