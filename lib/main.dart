@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bottom_navigationbar/constants/matrial_white.dart';
 import 'package:flutter_bottom_navigationbar/home_page.dart';
-import 'package:flutter_bottom_navigationbar/screens/auth_screen.dart';
 
 main() {
   runApp(BtmNavBar());

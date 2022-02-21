@@ -1,4 +1,4 @@
-package com.example.flutter_bottom_navigationbar
+package com.y_std.y_instagramClone
 
 import io.flutter.embedding.android.FlutterActivity
 

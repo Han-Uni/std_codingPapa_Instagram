@@ -42,6 +42,8 @@ dependencies:
   path: ^1.8.0
   path_provider: ^2.0.9
   local_image_provider: ^4.0.1
+  firebase_auth: ^3.3.7
+
 
 dev_dependencies:
   flutter_test:
