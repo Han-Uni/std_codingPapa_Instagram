@@ -14,7 +14,14 @@ class FirebaseAuthState extends ChangeNotifier {
   User? _user;
 
   void watchAuthChange() {
-    _firebaseAuth.authStateChanges();
+    _firebaseAuth.authStateChanges().listen((user) {
+      if (user == null && _user == null) {
+        return;
+      } else if (user != _user) {
+        _user = user;
+        changeFirebaseAuthStatus();
+      }
+    });
   }
 
   void changeFirebaseAuthStatus([FirebaseAuthStatus? firebaseAuthStatus]) {
@@ -30,6 +37,8 @@ class FirebaseAuthState extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  FirebaseAuthStatus get firebaseAuthStatus => _firebaseAuthStatus;
 }
 
 enum FirebaseAuthStatus { signout, progress, signin }
