@@ -10,9 +10,14 @@ import 'package:flutter/foundation.dart';
 
 class FirebaseAuthState extends ChangeNotifier {
   FirebaseAuthStatus _firebaseAuthStatus = FirebaseAuthStatus.progress;
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   User? _user;
 
-  void changeFirebaseAuthStatus(FirebaseAuthStatus firebaseAuthStatus) {
+  void watchAuthChange() {
+    _firebaseAuth.authStateChanges();
+  }
+
+  void changeFirebaseAuthStatus([FirebaseAuthStatus? firebaseAuthStatus]) {
     if (firebaseAuthStatus != null) {
       _firebaseAuthStatus = firebaseAuthStatus;
     } else {
