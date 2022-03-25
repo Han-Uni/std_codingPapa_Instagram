@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bottom_navigationbar/constants/matrial_white.dart';
 import 'package:flutter_bottom_navigationbar/home_page.dart';
@@ -13,7 +14,9 @@ import 'package:provider/provider.dart';
 // currentUser() => currentUser
 // onAuthStateChanged => authStateChanges()
 
-main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(InstaCloneApp());
 }
 
@@ -33,21 +36,22 @@ class _InstaCloneAppState extends State<InstaCloneApp> {
       value: _firebaseAuthState,
       child: MaterialApp(
         //home: AuthScreen(),
-        home: Consumer<FirebaseAuthState>(
-            builder: (BuildContext context, FirebaseAuthState firebaseAuthState,
-                Widget? child) {
-              switch (firebaseAuthState.firebaseAuthStatus) {
-                case FirebaseAuthStatus.signout:
-                  return AuthScreen();
-                case FirebaseAuthStatus.progress:
-                  return y_ProgressIndicator();
-                case FirebaseAuthStatus.signin:
-                  return HomePage();
-                default:
-                  return y_ProgressIndicator();
-              }
-            },
-            child: HomePage()),
+        // home: Consumer<FirebaseAuthState>(
+        //     builder: (BuildContext context, FirebaseAuthState firebaseAuthState,
+        //         Widget? child) {
+        //       switch (firebaseAuthState.firebaseAuthStatus) {
+        //         case FirebaseAuthStatus.signout:
+        //           return AuthScreen();
+        //         case FirebaseAuthStatus.progress:
+        //           return y_ProgressIndicator();
+        //         case FirebaseAuthStatus.signin:
+        //           return HomePage();
+        //         default:
+        //           return y_ProgressIndicator();
+        //       }
+        //     },
+        //     child: HomePage()),
+        home: HomePage(),
         theme: ThemeData(primarySwatch: y_white),
       ),
     );

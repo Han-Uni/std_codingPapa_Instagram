@@ -4,7 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bottom_navigationbar/constants/auth_input_decor.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
 import 'package:flutter_bottom_navigationbar/home_page.dart';
+import 'package:flutter_bottom_navigationbar/models/firebase_auth_state.dart';
 import 'package:flutter_bottom_navigationbar/widgets/or_divider.dart';
+import 'package:provider/provider.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({Key? key}) : super(key: key);
@@ -99,7 +101,10 @@ class _SignInFormState extends State<SignInForm> {
                 SizedBox(height: common_xl_gap),
                 TextButton.icon(
                   style: TextButton.styleFrom(primary: Colors.blueAccent),
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<FirebaseAuthState>(context, listen: false)
+                        .changeFirebaseAuthStatus(FirebaseAuthStatus.signin);
+                  },
                   icon: ImageIcon(AssetImage("assets/images/facebook.png")),
                   label: Text('Facebook으로 로그인'),
                 )
