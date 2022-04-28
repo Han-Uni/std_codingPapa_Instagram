@@ -53,7 +53,7 @@ class ProfileSideMenu extends StatelessWidget {
               leading: Icon(Icons.logout_sharp, color: Colors.black87),
               onTap: () {
                 Provider.of<FirebaseAuthState>(context, listen: false)
-                    .changeFirebaseAuthStatus(FirebaseAuthStatus.signout);
+                    .signOut();
               },
             ),
           ],

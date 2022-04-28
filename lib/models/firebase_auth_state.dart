@@ -24,6 +24,15 @@ class FirebaseAuthState extends ChangeNotifier {
     });
   }
 
+  void signOut() {
+    _firebaseAuthStatus = FirebaseAuthStatus.signout;
+    if (_user != null) {
+      _user = null;
+      _firebaseAuth.signOut();
+    }
+    notifyListeners();
+  }
+
   void changeFirebaseAuthStatus([FirebaseAuthStatus? firebaseAuthStatus]) {
     if (firebaseAuthStatus != null) {
       _firebaseAuthStatus = firebaseAuthStatus;
