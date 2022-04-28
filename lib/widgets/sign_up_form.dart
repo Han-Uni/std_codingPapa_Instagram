@@ -8,7 +8,9 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bottom_navigationbar/constants/auth_input_decor.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
 import 'package:flutter_bottom_navigationbar/home_page.dart';
+import 'package:flutter_bottom_navigationbar/models/firebase_auth_state.dart';
 import 'package:flutter_bottom_navigationbar/widgets/or_divider.dart';
+import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -100,7 +102,10 @@ class _SignUpFormState extends State<SignUpForm> {
                 SizedBox(height: common_xl_gap),
                 TextButton.icon(
                   style: TextButton.styleFrom(primary: Colors.blueAccent),
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<FirebaseAuthState>(context, listen: false)
+                        .changeFirebaseAuthStatus(FirebaseAuthStatus.signin);
+                  },
                   icon: ImageIcon(AssetImage("assets/images/facebook.png")),
                   label: Text('Facebook으로 로그인'),
                 )
@@ -121,8 +126,8 @@ class _SignUpFormState extends State<SignUpForm> {
           // 위의 validator 부분이 다 null로 들어와서 True가 되면 아래 유효성검사 성공 메세지가 뜸.
           if (_formKey.currentState!.validate()) {
             print("유효성 검사 성공 !!!");
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => HomePage()));
+            Provider.of<FirebaseAuthState>(context, listen: false)
+                .changeFirebaseAuthStatus(FirebaseAuthStatus.signin);
           }
         },
         child: Text(

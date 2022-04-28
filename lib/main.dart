@@ -37,20 +37,18 @@ class _InstaCloneAppState extends State<InstaCloneApp> {
       child: MaterialApp(
         //home: AuthScreen(),
         home: Consumer<FirebaseAuthState>(
-            builder: (BuildContext context, FirebaseAuthState firebaseAuthState,
-                Widget? child) {
-              switch (firebaseAuthState.firebaseAuthStatus) {
-                case FirebaseAuthStatus.signout:
-                  return AuthScreen();
-                case FirebaseAuthStatus.progress:
-                  return y_ProgressIndicator();
-                case FirebaseAuthStatus.signin:
-                  return HomePage();
-                default:
-                  return y_ProgressIndicator();
-              }
-            },
-            child: HomePage()),
+          builder: (BuildContext context, FirebaseAuthState firebaseAuthState,
+              Widget? child) {
+            switch (firebaseAuthState.firebaseAuthStatus) {
+              case FirebaseAuthStatus.signout:
+                return AuthScreen();
+              case FirebaseAuthStatus.signin:
+                return HomePage();
+              default:
+                return y_ProgressIndicator();
+            }
+          },
+        ),
         //home: HomePage(),
         theme: ThemeData(primarySwatch: y_white),
       ),
