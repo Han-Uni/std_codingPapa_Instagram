@@ -59,7 +59,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (text!.isNotEmpty && text.contains("@")) {
                       return null;
                     } else {
-                      return '이메일 형식에 맞게 작성하세요!';
+                      return '이메일 형식에 맞게 작성하세요.';
                     }
                   },
                 ),
@@ -76,7 +76,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (text!.isNotEmpty && text.length > 5) {
                       return null;
                     } else {
-                      return '비밀번호를 6글자 이상 입력하세요!';
+                      return '비밀번호를 6글자 이상 입력하세요.';
                     }
                   },
                 ),
@@ -91,7 +91,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     if (text!.isNotEmpty && _pwController.text == text) {
                       return null;
                     } else {
-                      return '이메일 형식에 맞게 작성하세요!';
+                      return '비밀번호가 일치하지 않습니다.';
                     }
                   },
                 ),

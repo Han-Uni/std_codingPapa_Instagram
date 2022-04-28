@@ -53,7 +53,7 @@ class _SignInFormState extends State<SignInForm> {
                     if (text!.isNotEmpty && text.contains("@")) {
                       return null;
                     } else {
-                      return '이메일 형식에 맞게 작성하세요!';
+                      return '이메일 형식에 맞게 작성하세요.';
                     }
                   },
                 ),
@@ -70,7 +70,7 @@ class _SignInFormState extends State<SignInForm> {
                     if (text!.isNotEmpty && text.length > 5) {
                       return null;
                     } else {
-                      return '비밀번호를 6글자 이상 입력하세요!';
+                      return '비밀번호를 6글자 이상 입력하세요.';
                     }
                   },
                 ),
@@ -126,7 +126,9 @@ class _SignInFormState extends State<SignInForm> {
           if (_formKey.currentState!.validate()) {
             print("유효성 검사 성공 !!!");
             Provider.of<FirebaseAuthState>(context, listen: false).login(
-                email: _emailController.text, password: _pwController.text);
+                context,
+                email: _emailController.text,
+                password: _pwController.text);
           }
         },
         child: Text(
