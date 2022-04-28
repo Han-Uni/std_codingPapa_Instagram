@@ -125,8 +125,8 @@ class _SignInFormState extends State<SignInForm> {
           // 위의 validator 부분이 다 null로 들어와서 True가 되면 아래 유효성검사 성공 메세지가 뜸.
           if (_formKey.currentState!.validate()) {
             print("유효성 검사 성공 !!!");
-            Provider.of<FirebaseAuthState>(context, listen: false)
-                .changeFirebaseAuthStatus(FirebaseAuthStatus.signin);
+            Provider.of<FirebaseAuthState>(context, listen: false).login(
+                email: _emailController.text, password: _pwController.text);
           }
         },
         child: Text(
