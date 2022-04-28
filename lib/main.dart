@@ -29,6 +29,7 @@ class InstaCloneApp extends StatefulWidget {
 
 class _InstaCloneAppState extends State<InstaCloneApp> {
   FirebaseAuthState _firebaseAuthState = FirebaseAuthState();
+  late Widget _currentWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +42,19 @@ class _InstaCloneAppState extends State<InstaCloneApp> {
               Widget? child) {
             switch (firebaseAuthState.firebaseAuthStatus) {
               case FirebaseAuthStatus.signout:
-                return AuthScreen();
+                _currentWidget = AuthScreen();
+                break;
               case FirebaseAuthStatus.signin:
-                return HomePage();
+                _currentWidget = HomePage();
+                break;
               default:
-                return y_ProgressIndicator();
+                _currentWidget = y_ProgressIndicator();
             }
+            return AnimatedSwitcher(
+              // duration : 애니메이션을 얼마동안 실행할 것인지 시간 넣어주기
+              duration: Duration(milliseconds: 300),
+              child: _currentWidget,
+            );
           },
         ),
         //home: HomePage(),
