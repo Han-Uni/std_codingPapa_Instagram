@@ -55,7 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
                         style: TextStyle(color: Colors.grey),
                         children: [
                           TextSpan(
-                              text: (selectedForm == 0) ? '가입하기.' : '로그인하기',
+                              text: (selectedForm == 0) ? '로그인하기.' : '가입하기',
                               style: TextStyle(
                                   color: Colors.blueAccent,
                                   fontWeight: FontWeight.bold)),

@@ -8,7 +8,7 @@ PODS:
     - FirebaseAuth (~> 8.11.0)
   - Firebase/CoreOnly (8.11.0):
     - FirebaseCore (= 8.11.0)
-  - firebase_auth (3.3.8):
+  - firebase_auth (1.4.1):
     - Firebase/Auth (= 8.11.0)
     - firebase_core
     - Flutter
@@ -117,7 +117,7 @@ SPEC CHECKSUMS:
   app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
   camera: 9993f92f2c793e87b65e35f3a23c70582afb05b1
   Firebase: 44dd9724c84df18b486639e874f31436eaa9a20c
-  firebase_auth: 386760cb543983c9f00ed148cd83e2c8443c94a2
+  firebase_auth: a8ec2b9c410628f2b7025ab4587e7b8636cbc1b3
   firebase_core: 443bccfd6aa6b42f07be365b500773dc69db2d87
   FirebaseAuth: d96d73aba85d192d7a7aa0b86dd6d7f8ec170b4b
   FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
@@ -129,11 +129,11 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: 4577a4cc914a5a07c40a8a0ad0acc22080418c2d
   local_image_provider: 05b1af32561482c0ca5a440fbc7f489ad818c962
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
+  path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
 
-PODFILE CHECKSUM: 71943e5721da32769569f84d1c4568270c62adcb
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
 COCOAPODS: 1.11.3
