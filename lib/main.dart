@@ -33,6 +33,7 @@ class _InstaCloneAppState extends State<InstaCloneApp> {
 
   @override
   Widget build(BuildContext context) {
+    _firebaseAuthState.watchAuthChange();
     return ChangeNotifierProvider<FirebaseAuthState>.value(
       value: _firebaseAuthState,
       child: MaterialApp(

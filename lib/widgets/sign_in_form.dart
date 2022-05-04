@@ -53,7 +53,7 @@ class _SignInFormState extends State<SignInForm> {
                     if (text!.isNotEmpty && text.contains("@")) {
                       return null;
                     } else {
-                      return '이메일 형식에 맞게 작성하세요!';
+                      return '이메일 형식에 맞게 작성하세요.';
                     }
                   },
                 ),
@@ -70,7 +70,7 @@ class _SignInFormState extends State<SignInForm> {
                     if (text!.isNotEmpty && text.length > 5) {
                       return null;
                     } else {
-                      return '비밀번호를 6글자 이상 입력하세요!';
+                      return '비밀번호를 6글자 이상 입력하세요.';
                     }
                   },
                 ),
@@ -125,8 +125,10 @@ class _SignInFormState extends State<SignInForm> {
           // 위의 validator 부분이 다 null로 들어와서 True가 되면 아래 유효성검사 성공 메세지가 뜸.
           if (_formKey.currentState!.validate()) {
             print("유효성 검사 성공 !!!");
-            Provider.of<FirebaseAuthState>(context, listen: false)
-                .changeFirebaseAuthStatus(FirebaseAuthStatus.signin);
+            Provider.of<FirebaseAuthState>(context, listen: false).login(
+                context,
+                email: _emailController.text,
+                password: _pwController.text);
           }
         },
         child: Text(
