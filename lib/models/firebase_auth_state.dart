@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bottom_navigationbar/utils/simple_snackbar.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:path/path.dart';
 
 // firebase_auth: ^0.18.0부터는 변경 전에서 변경 후 값을 사용하세요!^^
@@ -107,6 +109,41 @@ class FirebaseAuthState extends ChangeNotifier {
       }
     }
 
+    notifyListeners();
+  }
+
+// snack bar를 통하여 로그인 상태를 보여주기 위해서 BuildContext context를 받아옴.
+  void loginWithFacebook(BuildContext context) async {
+    final facebookLogin = FacebookLogin();
+    final result = await facebookLogin.logIn();
+
+    switch (result.status) {
+      case FacebookLoginStatus.success:
+        _handleFacebookTokenWithFirebase(context, result.accessToken!.token);
+        break;
+      case FacebookLoginStatus.error:
+        simpleSnackbar(context, 'Error while facebook sign in');
+        break;
+      case FacebookLoginStatus.cancel:
+        simpleSnackbar(context, 'User cancel facebook sign in');
+        break;
+    }
+  }
+
+// snackbar를 위한 buildContext임.
+  void _handleFacebookTokenWithFirebase(
+      BuildContext context, String token) async {
+    // TODO: 토큰을 사용해서 파이어베이스로 로그인하기.
+    final AuthCredential credential = FacebookAuthProvider.credential(token);
+
+    final UserCredential authResult =
+        await _firebaseAuth.signInWithCredential(credential);
+    final User? user = authResult.user;
+    if (user == null) {
+      simpleSnackbar(context, 'Error while facebook sign in');
+    } else {
+      _user = user;
+    }
     notifyListeners();
   }
 
