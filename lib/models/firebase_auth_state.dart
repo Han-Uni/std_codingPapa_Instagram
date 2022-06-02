@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bottom_navigationbar/utils/simple_snackbar.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+//import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:path/path.dart';
 
 // firebase_auth: ^0.18.0부터는 변경 전에서 변경 후 값을 사용하세요!^^
@@ -113,21 +114,33 @@ class FirebaseAuthState extends ChangeNotifier {
   }
 
 // snack bar를 통하여 로그인 상태를 보여주기 위해서 BuildContext context를 받아옴.
-  void loginWithFacebook(BuildContext context) async {
-    final facebookLogin = FacebookLogin();
-    final result = await facebookLogin.logIn();
+  // void loginWithFacebook(BuildContext context) async {
+  //   final facebookLogin = FacebookLogin();
+  //   final result = await facebookLogin.logIn();
 
-    switch (result.status) {
-      case FacebookLoginStatus.success:
-        _handleFacebookTokenWithFirebase(context, result.accessToken!.token);
-        break;
-      case FacebookLoginStatus.error:
-        simpleSnackbar(context, 'Error while facebook sign in');
-        break;
-      case FacebookLoginStatus.cancel:
-        simpleSnackbar(context, 'User cancel facebook sign in');
-        break;
-    }
+  //   switch (result.status) {
+  //     case FacebookLoginStatus.success:
+  //       _handleFacebookTokenWithFirebase(context, result.accessToken!.token);
+  //       break;
+  //     case FacebookLoginStatus.error:
+  //       simpleSnackbar(context, 'Error while facebook sign in');
+  //       break;
+  //     case FacebookLoginStatus.cancel:
+  //       simpleSnackbar(context, 'User cancel facebook sign in');
+  //       break;
+  //   }
+  // }
+
+  Future<UserCredential> signInWithFacebook(BuildContext context) async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+
+    // Once signed in, return the UserCredential
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 
 // snackbar를 위한 buildContext임.
