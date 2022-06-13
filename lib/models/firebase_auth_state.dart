@@ -132,6 +132,8 @@ class FirebaseAuthState extends ChangeNotifier {
   // }
 
   Future<UserCredential> signInWithFacebook(BuildContext context) async {
+    changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
+
     // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login();
 
