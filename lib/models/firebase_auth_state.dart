@@ -17,21 +17,14 @@ class FirebaseAuthState extends ChangeNotifier {
   FirebaseAuthStatus _firebaseAuthStatus = FirebaseAuthStatus.progress;
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   User? _user;
-  bool initiated = false;
   FacebookLogin? _facebookLogin;
 
   void watchAuthChange() {
     print(' ## is Logged in : 시작위치 1 : ');
     _firebaseAuth.authStateChanges().listen((user) {
       if (user == null && _user == null) {
-        if (initiated) {
-          changeFirebaseAuthStatus();
-          print('### is Logged in : If : ');
-        } else {
-          initiated = true;
-          print('### is Logged in : else : ' + initiated.toString());
-          return;
-        }
+        changeFirebaseAuthStatus();
+        return;
       } else if (user != _user) {
         _user = user;
         changeFirebaseAuthStatus();
