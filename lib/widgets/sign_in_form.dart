@@ -103,7 +103,7 @@ class _SignInFormState extends State<SignInForm> {
                   style: TextButton.styleFrom(primary: Colors.blueAccent),
                   onPressed: () {
                     Provider.of<FirebaseAuthState>(context, listen: false)
-                        .changeFirebaseAuthStatus(FirebaseAuthStatus.signin);
+                        .signInWithFacebook(context);
                   },
                   icon: ImageIcon(AssetImage("assets/images/facebook.png")),
                   label: Text('Facebook으로 로그인'),

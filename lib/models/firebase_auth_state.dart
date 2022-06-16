@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bottom_navigationbar/utils/simple_snackbar.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-//import 'package:flutter_login_facebook/flutter_login_facebook.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:path/path.dart';
 
 // firebase_auth: ^0.18.0부터는 변경 전에서 변경 후 값을 사용하세요!^^
@@ -14,14 +14,24 @@ import 'package:path/path.dart';
 // onAuthStateChanged => authStateChanges()
 
 class FirebaseAuthState extends ChangeNotifier {
-  FirebaseAuthStatus _firebaseAuthStatus = FirebaseAuthStatus.signout;
+  FirebaseAuthStatus _firebaseAuthStatus = FirebaseAuthStatus.progress;
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   User? _user;
+  bool initiated = false;
+  FacebookLogin? _facebookLogin;
 
   void watchAuthChange() {
+    print(' ## is Logged in : 시작위치 1 : ');
     _firebaseAuth.authStateChanges().listen((user) {
       if (user == null && _user == null) {
-        return;
+        if (initiated) {
+          changeFirebaseAuthStatus();
+          print('### is Logged in : If : ');
+        } else {
+          initiated = true;
+          print('### is Logged in : else : ' + initiated.toString());
+          return;
+        }
       } else if (user != _user) {
         _user = user;
         changeFirebaseAuthStatus();
@@ -31,6 +41,8 @@ class FirebaseAuthState extends ChangeNotifier {
 
   void login(BuildContext context,
       {@required String? email, @required String? password}) {
+    print(' ## is Logged in : 시작위치 2 : ');
+    changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
     // .trim() : 띄어쓰기 자동 삭제해주기
     _firebaseAuth
         .signInWithEmailAndPassword(
@@ -62,6 +74,8 @@ class FirebaseAuthState extends ChangeNotifier {
 
   void registerUser(BuildContext context,
       {@required String? email, @required String? password}) {
+    print(' ## is Logged in : 시작위치 3 : ');
+    changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
     String _message = '';
     // .trim() : 띄어쓰기 자동 삭제해주기
     _firebaseAuth
@@ -90,50 +104,58 @@ class FirebaseAuthState extends ChangeNotifier {
     });
   }
 
-  void signOut() {
+  void signOut() async {
+    print(' ## is Logged in : 시작위치 4 : ');
+    changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
     _firebaseAuthStatus = FirebaseAuthStatus.signout;
     if (_user != null) {
       _user = null;
-      _firebaseAuth.signOut();
+      await _firebaseAuth.signOut();
+      if (await _facebookLogin!.isLoggedIn) {
+        await _facebookLogin!.logOut();
+      }
     }
     notifyListeners();
   }
 
   void changeFirebaseAuthStatus([FirebaseAuthStatus? firebaseAuthStatus]) {
+    print(' ## is Logged in : 시작위치 5 : ');
     if (firebaseAuthStatus != null) {
       _firebaseAuthStatus = firebaseAuthStatus;
+      print('### is Logged in : 1 : ');
     } else {
       if (_user != null) {
         _firebaseAuthStatus = FirebaseAuthStatus.signin;
+        print('### is Logged in : 2 : ');
       } else {
-        firebaseAuthStatus = FirebaseAuthStatus.signout;
+        _firebaseAuthStatus = FirebaseAuthStatus.signout;
+        print('### is Logged in : 3 : ');
       }
     }
-
     notifyListeners();
   }
 
-// snack bar를 통하여 로그인 상태를 보여주기 위해서 BuildContext context를 받아옴.
+//snack bar를 통하여 로그인 상태를 보여주기 위해서 BuildContext context를 받아옴.
   // void loginWithFacebook(BuildContext context) async {
   //   final facebookLogin = FacebookLogin();
   //   final result = await facebookLogin.logIn();
 
-  //   switch (result.status) {
-  //     case FacebookLoginStatus.success:
-  //       _handleFacebookTokenWithFirebase(context, result.accessToken!.token);
-  //       break;
-  //     case FacebookLoginStatus.error:
-  //       simpleSnackbar(context, 'Error while facebook sign in');
-  //       break;
-  //     case FacebookLoginStatus.cancel:
-  //       simpleSnackbar(context, 'User cancel facebook sign in');
-  //       break;
+  // switch (result.status) {
+  //   case FacebookLoginStatus.success:
+  //     _handleFacebookTokenWithFirebase(context, result.accessToken!.token);
+  //     break;
+  //   case FacebookLoginStatus.error:
+  //     simpleSnackbar(context, 'Error while facebook sign in');
+  //     break;
+  //   case FacebookLoginStatus.cancel:
+  //     simpleSnackbar(context, 'User cancel facebook sign in');
+  //     break;
   //   }
   // }
 
+///////////////
   Future<UserCredential> signInWithFacebook(BuildContext context) async {
     changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
-
     // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login();
 
@@ -141,13 +163,26 @@ class FirebaseAuthState extends ChangeNotifier {
     final OAuthCredential facebookAuthCredential =
         FacebookAuthProvider.credential(loginResult.accessToken!.token);
 
-    // Once signed in, return the UserCredential
+    switch (loginResult.status) {
+      case LoginStatus.success:
+        break;
+      case LoginStatus.failed:
+        simpleSnackbar(context, 'Error while facebook sign in');
+        break;
+      case LoginStatus.cancelled:
+        simpleSnackbar(context, 'User cancel facebook sign in');
+        break;
+      default:
+      // Once signed in, return the UserCredential
+      //return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    }
     return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
   }
 
 // snackbar를 위한 buildContext임.
   void _handleFacebookTokenWithFirebase(
       BuildContext context, String token) async {
+    print(' ## is Logged in : 시작위치 6 : ');
     // TODO: 토큰을 사용해서 파이어베이스로 로그인하기.
     final AuthCredential credential = FacebookAuthProvider.credential(token);
 
