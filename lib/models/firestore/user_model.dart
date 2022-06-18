@@ -26,10 +26,10 @@ class UserModel {
       : this.fromMap(snapshot.data() as Map<String, dynamic>, snapshot.id,
             reference: snapshot.reference);
 
-  static Map<String, dynamic>? getMapForCreateUser(String? email) {
+  static Map<String, dynamic> getMapForCreateUser(String email) {
     Map<String, dynamic> map = Map();
     map[KEY_PROFILEIMG] = "";
-    map[KEY_USERNAME] = email!.split("@")[0];
+    map[KEY_USERNAME] = email.split("@")[0];
     map[KEY_EMAIL] = email;
     map[KEY_LIKEDPOSTS] = [];
     map[KEY_FOLLOWERS] = 0;

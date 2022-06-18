@@ -1,9 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_bottom_navigationbar/models/firestore/User_model.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model.dart';
 
 class UserModelState extends ChangeNotifier {
   UserModel? _userModel;
-
   UserModel get userModel => _userModel!;
 
   set userModel(UserModel userModel) {

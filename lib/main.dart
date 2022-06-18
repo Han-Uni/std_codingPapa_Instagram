@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bottom_navigationbar/constants/matrial_white.dart';
 import 'package:flutter_bottom_navigationbar/home_page.dart';
 import 'package:flutter_bottom_navigationbar/models/firebase_auth_state.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/User_model.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
+import 'package:flutter_bottom_navigationbar/repo/user_network_repository.dart';
 import 'package:flutter_bottom_navigationbar/screens/auth_screen.dart';
 import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -34,8 +38,21 @@ class _InstaCloneAppState extends State<InstaCloneApp> {
   @override
   Widget build(BuildContext context) {
     _firebaseAuthState.watchAuthChange();
-    return ChangeNotifierProvider<FirebaseAuthState>.value(
-      value: _firebaseAuthState,
+    MultiProvider(providers: [
+      ChangeNotifierProvider<FirebaseAuthState>.value(
+          value: _firebaseAuthState),
+      ChangeNotifierProvider<UserModelState>(
+        create: (_) => UserModelState(),
+      )
+    ]);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<FirebaseAuthState>.value(
+            value: _firebaseAuthState),
+        ChangeNotifierProvider<UserModelState>(
+          create: (_) => UserModelState(),
+        )
+      ],
       child: MaterialApp(
         //home: AuthScreen(),
         home: Consumer<FirebaseAuthState>(
@@ -46,6 +63,15 @@ class _InstaCloneAppState extends State<InstaCloneApp> {
                 _currentWidget = AuthScreen();
                 break;
               case FirebaseAuthStatus.signin:
+                userNetworkRepository
+                    .getUserModelStream(firebaseAuthState.user.uid)
+                    .listen((userModel) {
+                  // listen: false 이유 : UserModelState에서 userModel이 변경될 때마다 notifyListener를 해줘서 변경해주기 때문에 여기서 listen: flase로 해줘야함.
+                  // listen: true 기본값.
+                  Provider.of<UserModelState>(context, listen: false)
+                      .userModel = userModel;
+                });
+
                 _currentWidget = HomePage();
                 break;
               default:

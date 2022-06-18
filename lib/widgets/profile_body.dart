@@ -4,8 +4,10 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
 import 'package:flutter_bottom_navigationbar/constants/screen_size.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
 import 'package:flutter_bottom_navigationbar/screens/profile_screen.dart';
 import 'package:flutter_bottom_navigationbar/widgets/rounded_avatar.dart';
+import 'package:provider/provider.dart';
 
 class ProfileBody extends StatefulWidget {
   final Function? onMenuChanged;
@@ -81,7 +83,7 @@ class _ProfileBodyState extends State<ProfileBody>
                         ),
                       ],
                     ),
-                    _username(),
+                    _username(context),
                     _userBio(),
                     _editProfileBtn(),
                     _tapButtons(),
@@ -280,11 +282,14 @@ class _ProfileBodyState extends State<ProfileBody>
     );
   }
 
-  Widget _username() {
+  Widget _username(BuildContext context) {
+    var userModel = Provider.of<UserModelState>(context).userModel;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: common_gap),
       child: Text(
-        'username',
+        // '11',
+        userModel == null ? "" : userModel.username,
+        //Provider.of<UserModelState>(context).userModel.username,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
     );
