@@ -3,6 +3,10 @@ PODS:
     - Flutter
   - camera (0.0.1):
     - Flutter
+  - cloud_firestore (3.1.5):
+    - Firebase/Firestore (= 8.11.0)
+    - firebase_core
+    - Flutter
   - FBAEMKit (13.2.0):
     - FBSDKCoreKit_Basics (= 13.2.0)
   - FBSDKCoreKit (13.2.0):
@@ -16,6 +20,9 @@ PODS:
     - FirebaseAuth (~> 8.11.0)
   - Firebase/CoreOnly (8.11.0):
     - FirebaseCore (= 8.11.0)
+  - Firebase/Firestore (8.11.0):
+    - Firebase/CoreOnly
+    - FirebaseFirestore (~> 8.11.0)
   - firebase_auth (1.0.2):
     - Firebase/Auth (= 8.11.0)
     - firebase_core
@@ -37,6 +44,14 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
     - nanopb (~> 2.30908.0)
+  - FirebaseFirestore (8.11.0):
+    - FirebaseFirestore/AutodetectLeveldb (= 8.11.0)
+  - FirebaseFirestore/AutodetectLeveldb (8.11.0):
+    - FirebaseFirestore/Base
+    - FirebaseFirestore/WithLeveldb
+  - FirebaseFirestore/Base (8.11.0)
+  - FirebaseFirestore/WithLeveldb (8.11.0):
+    - FirebaseFirestore/Base
   - Flutter (1.0.0)
   - flutter_facebook_auth (4.3.0):
     - FBSDKCoreKit (~> 13)
@@ -87,8 +102,10 @@ PODS:
 DEPENDENCIES:
   - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - camera (from `.symlinks/plugins/camera/ios`)
+  - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
+  - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `8.11.0`)
   - Flutter (from `Flutter`)
   - flutter_facebook_auth (from `.symlinks/plugins/flutter_facebook_auth/ios`)
   - flutter_login_facebook (from `.symlinks/plugins/flutter_login_facebook/ios`)
@@ -119,10 +136,15 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/app_settings/ios"
   camera:
     :path: ".symlinks/plugins/camera/ios"
+  cloud_firestore:
+    :path: ".symlinks/plugins/cloud_firestore/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 8.11.0
   Flutter:
     :path: Flutter
   flutter_facebook_auth:
@@ -138,9 +160,15 @@ EXTERNAL SOURCES:
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
 
+CHECKOUT OPTIONS:
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 8.11.0
+
 SPEC CHECKSUMS:
   app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
   camera: 9993f92f2c793e87b65e35f3a23c70582afb05b1
+  cloud_firestore: b240413c9edae0dd078681e2c647aea8c240ee00
   FBAEMKit: c2b2895363b7e57192013d1dc49fdf498b28624c
   FBSDKCoreKit: 58139803d861e72c7661dc875611a759352a55ac
   FBSDKCoreKit_Basics: 1ffc68326a5ece051d85574f02a0adcf27c2a5f2
@@ -151,6 +179,7 @@ SPEC CHECKSUMS:
   FirebaseAuth: d96d73aba85d192d7a7aa0b86dd6d7f8ec170b4b
   FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
   FirebaseCoreDiagnostics: 92e07a649aeb66352b319d43bdd2ee3942af84cb
+  FirebaseFirestore: 8a0c6a06219bbaad86c72bcb66688c28995dde84
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_facebook_auth: a030aef1c2552fdc7cb090acc716ac836e3bb63c
   flutter_login_facebook: 7fb41892bacb311cc8b09967b23cfab3498920a1
@@ -165,6 +194,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
 
-PODFILE CHECKSUM: ce13d36744da294d67f8e460dbb7aed7c09bd7f4
+PODFILE CHECKSUM: 15ac5cf6013d73f4779027458b478306981479e5
 
 COCOAPODS: 1.11.3

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bottom_navigationbar/repo/user_network_repository.dart';
 import 'package:flutter_bottom_navigationbar/widgets/post.dart';
 
 class FeedScreen extends StatelessWidget {
@@ -22,15 +23,19 @@ class FeedScreen extends StatelessWidget {
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
-          children: const <Widget>[
+          children: <Widget>[
             IconButton(
-              onPressed: null,
+              onPressed: () {
+                userNetworkRepository.sendData();
+              },
               icon: ImageIcon(AssetImage('assets/images/actionbar_camera.png')),
               color: Colors.black87,
             ),
             IconButton(
-              onPressed: null,
-              icon: ImageIcon(AssetImage('assets/images/actionbar_camera.png')),
+              onPressed: () {
+                userNetworkRepository.getData();
+              },
+              icon: ImageIcon(AssetImage('assets/images/direct_message.png')),
               color: Colors.black,
             ),
           ],
