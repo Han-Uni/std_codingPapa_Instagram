@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bottom_navigationbar/repo/user_network_repository.dart';
 import 'package:flutter_bottom_navigationbar/utils/simple_snackbar.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_login_facebook/flutter_login_facebook.dart';
@@ -66,12 +67,11 @@ class FirebaseAuthState extends ChangeNotifier {
   }
 
   void registerUser(BuildContext context,
-      {@required String? email, @required String? password}) {
-    print(' ## is Logged in : 시작위치 3 : ');
+      {@required String? email, @required String? password}) async {
     changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
     String _message = '';
     // .trim() : 띄어쓰기 자동 삭제해주기
-    _firebaseAuth
+    UserCredential userCredential = await _firebaseAuth
         .createUserWithEmailAndPassword(
             email: email!.trim(), password: password!.trim())
         .catchError((error) {
@@ -95,6 +95,17 @@ class FirebaseAuthState extends ChangeNotifier {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
+    User? user = userCredential.user;
+    if (user == null) {
+      SnackBar snackBar = SnackBar(
+        content: Text("Please try again later!!!"),
+        backgroundColor: Colors.redAccent,
+      );
+    } else {
+      //todo send data to firestore
+      await userNetworkRepository.attemptCreateUser(
+          userKey: user.uid, email: user.email);
+    }
   }
 
   void signOut() async {

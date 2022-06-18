@@ -7,7 +7,7 @@ const KEY_PROFILEIMG = 'profile_img';
 const KEY_EMAIL = 'email';
 const KEY_LIKEDPOSTS = 'liked_posts';
 const KEY_FOLLOWERS = 'follwers';
-const KEY_FOLLWINGS = 'follwings';
+const KEY_FOLLOWINGS = 'follwings';
 const KEY_MYPOSTS = 'my_posts';
 const KEY_USERNAME = 'user_name';
 

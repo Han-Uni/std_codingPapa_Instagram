@@ -25,16 +25,12 @@ class FeedScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             IconButton(
-              onPressed: () {
-                userNetworkRepository.sendData();
-              },
+              onPressed: () {},
               icon: ImageIcon(AssetImage('assets/images/actionbar_camera.png')),
               color: Colors.black87,
             ),
             IconButton(
-              onPressed: () {
-                userNetworkRepository.getData();
-              },
+              onPressed: () {},
               icon: ImageIcon(AssetImage('assets/images/direct_message.png')),
               color: Colors.black,
             ),

@@ -84,6 +84,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   height: common_s_gap,
                 ),
                 TextFormField(
+                  obscureText: true,
                   cursorColor: Colors.black45,
                   controller: _cpwController,
                   decoration: textInputDecor('확인비밀번호'),

@@ -18,7 +18,7 @@ class UserModel {
         email = map[KEY_EMAIL],
         likedPosts = map[KEY_LIKEDPOSTS],
         followers = map[KEY_FOLLOWERS],
-        followings = map[KEY_FOLLWINGS],
+        followings = map[KEY_FOLLOWINGS],
         myPosts = map[KEY_MYPOSTS];
 
   UserModel.fromSnapshot(DocumentSnapshot snapshot)
@@ -26,8 +26,15 @@ class UserModel {
       : this.fromMap(snapshot.data() as Map<String, dynamic>, snapshot.id,
             reference: snapshot.reference);
 
-  // void printTest() {
-  //   print('### is Logged : userModel.fromMap : ' +
-  //       UserModel.fromMap(Map<ma, userKey>).toString());
-  // }
+  static Map<String, dynamic>? getMapForCreateUser(String? email) {
+    Map<String, dynamic> map = Map();
+    map[KEY_PROFILEIMG] = "";
+    map[KEY_USERNAME] = email!.split("@")[0];
+    map[KEY_EMAIL] = email;
+    map[KEY_LIKEDPOSTS] = [];
+    map[KEY_FOLLOWERS] = 0;
+    map[KEY_FOLLOWINGS] = [];
+    map[KEY_MYPOSTS] = [];
+    return map;
+  }
 }
