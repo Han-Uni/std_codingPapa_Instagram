@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bottom_navigationbar/constants/screen_size.dart';
 import 'package:flutter_bottom_navigationbar/models/camera_state.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
+import 'package:flutter_bottom_navigationbar/repo/helper/generate_post_key.dart';
 import 'package:flutter_bottom_navigationbar/screens/share_post_screen.dart';
 import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -95,7 +97,9 @@ class _TakePhotoState extends State<TakePhoto> {
   void _attemptTakePhoto(CameraState cameraState, BuildContext context) async {
     // millisecondsSinceEpoch : 1970-01-01T00:00:00Z (UTC) 이 시간처럼 나타내주는 것.
     // timeInMilli : 파일명이 됨.
-    final String timeInMilli = DateTime.now().millisecondsSinceEpoch.toString();
+    //final String timeInMilli = DateTime.now().millisecondsSinceEpoch.toString();
+    final String postKey = getNewPostKey(
+        Provider.of<UserModelState>(context, listen: false).userModel);
     try {
       // getTemporaryDirectory.path로 String 값을 만들어 파일명.확장자와 같이 붙여줌. : 저장위치
       // (await getTemporaryDirectory()).path + '$timeInMilli.png' 로 사용할 수 있지만 어떤 위험때문에 join을 사용해서 진행한다.
@@ -105,8 +109,11 @@ class _TakePhotoState extends State<TakePhoto> {
       XFile pictureTaken = await cameraState.controller!.takePicture();
       File imageFile = File(pictureTaken.path);
       // (_) : context를 builder를 통해서 받는데 사용을 안하니까 저렇게 표현해줌.
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (_) => SharePostScreen(imageFile)));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => SharePostScreen(
+                imageFile,
+                postKey: postKey,
+              )));
     } catch (e) {}
     ;
   }

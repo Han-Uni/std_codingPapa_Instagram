@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bottom_navigationbar/constants/matrial_white.dart';
 import 'package:flutter_bottom_navigationbar/home_page.dart';
 import 'package:flutter_bottom_navigationbar/models/firebase_auth_state.dart';
-import 'package:flutter_bottom_navigationbar/models/firestore/User_model.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model.dart';
 import 'package:flutter_bottom_navigationbar/models/firestore/user_model.dart';
 import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
 import 'package:flutter_bottom_navigationbar/repo/user_network_repository.dart';
