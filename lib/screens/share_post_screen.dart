@@ -12,6 +12,21 @@ class SharePostScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.file(imageFile!);
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'New Post',
+            // textScaleFactor: 1.4,
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {},
+                child: Text(
+                  'share',
+                  style: TextStyle(color: Colors.blue),
+                ))
+          ],
+        ),
+        body: Image.file(imageFile!));
   }
 }
