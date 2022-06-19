@@ -283,11 +283,15 @@ class _ProfileBodyState extends State<ProfileBody>
   }
 
   Widget _username(BuildContext context) {
-    var userModel = Provider.of<UserModelState>(context).userModel;
+    UserModelState userModelState = Provider.of<UserModelState>(context);
+    //var userModel = Provider.of<UserModelState>(context).userModel;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: common_gap),
       child: Text(
-        userModel == null ? "" : userModel.username,
+        userModelState == null || userModelState.userModel == null
+            ? ""
+            : userModelState.userModel.username,
+
         //Provider.of<UserModelState>(context).userModel.username,
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
