@@ -34,11 +34,11 @@ class FirebaseAuthState extends ChangeNotifier {
   }
 
   void login(BuildContext context,
-      {@required String? email, @required String? password}) {
+      {@required String? email, @required String? password}) async {
     print(' ## is Logged in : 시작위치 2 : ');
     changeFirebaseAuthStatus(FirebaseAuthStatus.progress);
     // .trim() : 띄어쓰기 자동 삭제해주기
-    _firebaseAuth
+    UserCredential userCredential = await _firebaseAuth
         .signInWithEmailAndPassword(
             email: email!.trim(), password: password!.trim())
         .catchError((error) {
@@ -64,6 +64,15 @@ class FirebaseAuthState extends ChangeNotifier {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
+
+    _user = userCredential.user;
+    if (_user == null) {
+      SnackBar snackBar = SnackBar(
+        content: Text("Please try again later!!!"),
+        backgroundColor: Colors.redAccent,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   void registerUser(BuildContext context,
