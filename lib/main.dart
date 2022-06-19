@@ -60,17 +60,11 @@ class _InstaCloneAppState extends State<InstaCloneApp> {
               Widget? child) {
             switch (firebaseAuthState.firebaseAuthStatus) {
               case FirebaseAuthStatus.signout:
+                _clearUserModel(context);
                 _currentWidget = AuthScreen();
                 break;
               case FirebaseAuthStatus.signin:
-                userNetworkRepository
-                    .getUserModelStream(firebaseAuthState.user.uid)
-                    .listen((userModel) {
-                  // listen: false 이유 : UserModelState에서 userModel이 변경될 때마다 notifyListener를 해줘서 변경해주기 때문에 여기서 listen: flase로 해줘야함.
-                  // listen: true 기본값.
-                  Provider.of<UserModelState>(context, listen: false)
-                      .userModel = userModel;
-                });
+                _initUserModel(firebaseAuthState, context);
 
                 _currentWidget = HomePage();
                 break;
@@ -88,5 +82,26 @@ class _InstaCloneAppState extends State<InstaCloneApp> {
         theme: ThemeData(primarySwatch: y_white),
       ),
     );
+  }
+
+  void _initUserModel(
+      FirebaseAuthState firebaseAuthState, BuildContext context) {
+    UserModelState userModelState =
+        Provider.of<UserModelState>(context, listen: false);
+
+    userModelState.currentStreamSub = userNetworkRepository
+        .getUserModelStream(firebaseAuthState.user.uid)
+        .listen((userModel) {
+      userModelState.userModel = userModel;
+      // listen: false 이유 : UserModelState에서 userModel이 변경될 때마다 notifyListener를 해줘서 변경해주기 때문에 여기서 listen: flase로 해줘야함.
+      // listen: true 기본값.
+      //Provider.of<UserModelState>(context, listen: false).userModel = userModel;
+    });
+  }
+
+  void _clearUserModel(BuildContext context) {
+    UserModelState userModelState =
+        Provider.of<UserModelState>(context, listen: false);
+    userModelState.clear();
   }
 }

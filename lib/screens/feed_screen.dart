@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bottom_navigationbar/repo/user_network_repository.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
 import 'package:flutter_bottom_navigationbar/widgets/post.dart';
+import 'package:provider/provider.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -30,7 +31,9 @@ class FeedScreen extends StatelessWidget {
               color: Colors.black87,
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                // Provider.of<UserModelState>(context, listen: false).clear();
+              },
               icon: ImageIcon(AssetImage('assets/images/direct_message.png')),
               color: Colors.black,
             ),

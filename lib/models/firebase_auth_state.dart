@@ -124,17 +124,13 @@ class FirebaseAuthState extends ChangeNotifier {
   }
 
   void changeFirebaseAuthStatus([FirebaseAuthStatus? firebaseAuthStatus]) {
-    print(' ## is Logged in : 시작위치 5 : ');
     if (firebaseAuthStatus != null) {
       _firebaseAuthStatus = firebaseAuthStatus;
-      print('### is Logged in : 1 : ');
     } else {
       if (_user != null) {
         _firebaseAuthStatus = FirebaseAuthStatus.signin;
-        print('### is Logged in : 2 : ');
       } else {
         _firebaseAuthStatus = FirebaseAuthStatus.signout;
-        print('### is Logged in : 3 : ');
       }
     }
     notifyListeners();

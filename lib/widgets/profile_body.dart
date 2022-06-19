@@ -287,7 +287,6 @@ class _ProfileBodyState extends State<ProfileBody>
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: common_gap),
       child: Text(
-        // '11',
         userModel == null ? "" : userModel.username,
         //Provider.of<UserModelState>(context).userModel.username,
         style: TextStyle(fontWeight: FontWeight.bold),
