@@ -4,14 +4,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
+import 'package:flutter_tags_x/flutter_tags_x.dart';
 
 class SharePostScreen extends StatelessWidget {
   final File? imageFile;
   final String? postKey;
 
   // 중괄호{} 안에 있으면 option값이 되니까 imageFile을 필수로 받기 위해서 중괄호 밖으로 빼준다.
-  const SharePostScreen(this.imageFile, {Key? key, @required this.postKey})
+  SharePostScreen(this.imageFile, {Key? key, @required this.postKey})
       : super(key: key);
+
+  List<String> _tagItems = [
+    "approval",
+    "pigeon",
+    "brown",
+    "expenditure",
+    "compromise",
+    "citizen",
+    "inspire",
+    "relieve",
+    "grave",
+    "incredible",
+    "invasion",
+    "voucher",
+    "girl",
+    "relax",
+    "problem",
+    "queue",
+    "aviation",
+    "profile",
+    "palace",
+    "drive",
+    "money",
+    "revolutionary",
+    "string",
+    "detective",
+    "follow",
+    "text",
+    "bet",
+    "decade",
+    "means",
+    "gossip"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +71,20 @@ class SharePostScreen extends StatelessWidget {
             _sectionButton('Tag People'),
             _divider,
             _sectionButton('Add Location'),
+            Tags(
+              heightHorizontalScroll: 39,
+              horizontalScroll: true,
+              itemCount: _tagItems.length,
+              itemBuilder: (index) => ItemTags(
+                index: index,
+                title: _tagItems[index],
+                activeColor: Colors.grey.shade200,
+                textActiveColor: Colors.black,
+                borderRadius: BorderRadius.circular(3),
+                elevation: 2,
+                color: Colors.grey.shade500,
+              ),
+            ),
             _divider,
           ],
         ));
