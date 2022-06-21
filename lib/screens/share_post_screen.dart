@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
 import 'package:flutter_tags_x/flutter_tags_x.dart';
 
-class SharePostScreen extends StatelessWidget {
+class SharePostScreen extends StatefulWidget {
   final File? imageFile;
   final String? postKey;
 
@@ -14,6 +15,11 @@ class SharePostScreen extends StatelessWidget {
   SharePostScreen(this.imageFile, {Key? key, @required this.postKey})
       : super(key: key);
 
+  @override
+  State<SharePostScreen> createState() => _SharePostScreenState();
+}
+
+class _SharePostScreenState extends State<SharePostScreen> {
   List<String> _tagItems = [
     "approval",
     "pigeon",
@@ -71,23 +77,31 @@ class SharePostScreen extends StatelessWidget {
             _sectionButton('Tag People'),
             _divider,
             _sectionButton('Add Location'),
-            Tags(
-              heightHorizontalScroll: 39,
-              horizontalScroll: true,
-              itemCount: _tagItems.length,
-              itemBuilder: (index) => ItemTags(
-                index: index,
-                title: _tagItems[index],
-                activeColor: Colors.grey.shade200,
-                textActiveColor: Colors.black,
-                borderRadius: BorderRadius.circular(3),
-                elevation: 2,
-                color: Colors.grey.shade500,
-              ),
-            ),
+            _tags(),
+            _divider,
+            SectionSwitch('Facebook'),
+            SectionSwitch('Twitter'),
+            SectionSwitch('Tumblr'),
             _divider,
           ],
         ));
+  }
+
+  Tags _tags() {
+    return Tags(
+      heightHorizontalScroll: 39,
+      horizontalScroll: true,
+      itemCount: _tagItems.length,
+      itemBuilder: (index) => ItemTags(
+        index: index,
+        title: _tagItems[index],
+        activeColor: Colors.grey.shade200,
+        textActiveColor: Colors.black,
+        borderRadius: BorderRadius.circular(3),
+        elevation: 2,
+        color: Colors.grey.shade500,
+      ),
+    );
   }
 
   Divider get _divider => Divider(
@@ -104,7 +118,7 @@ class SharePostScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontWeight: FontWeight.w400),
+            style: TextStyle(fontWeight: FontWeight.w500),
             //textAlign: TextAlign.center,
           ),
         ],
@@ -127,7 +141,7 @@ class SharePostScreen extends StatelessWidget {
       leading: AspectRatio(
         aspectRatio: 1,
         child: Image.file(
-          imageFile!,
+          widget.imageFile!,
           //width: size!.width / 6,
           //height: size!.height / 6,
           fit: BoxFit.fill,
@@ -135,9 +149,48 @@ class SharePostScreen extends StatelessWidget {
       ),
       title: TextFormField(
         decoration: InputDecoration(
-          hintText: 'sdfsdf',
+          hintText: 'Write acaption...',
           border: InputBorder.none,
         ),
+      ),
+    );
+  }
+}
+
+class SectionSwitch extends StatefulWidget {
+  final String _title;
+  const SectionSwitch(
+    this._title, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<SectionSwitch> createState() => _SectionSwitchState();
+}
+
+class _SectionSwitchState extends State<SectionSwitch> {
+  bool checked = false;
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: common_gap),
+      leading: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            widget._title,
+            style: TextStyle(fontWeight: FontWeight.w500),
+            //textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+      trailing: CupertinoSwitch(
+        onChanged: (onValue) {
+          setState(() {
+            checked = onValue;
+          });
+        },
+        value: checked,
       ),
     );
   }
