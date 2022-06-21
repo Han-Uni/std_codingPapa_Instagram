@@ -1,10 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_bottom_navigationbar/constants/auth_input_decor.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
-import 'package:flutter_bottom_navigationbar/constants/screen_size.dart';
 
 class SharePostScreen extends StatelessWidget {
   final File? imageFile;
@@ -33,26 +32,65 @@ class SharePostScreen extends StatelessWidget {
         ),
         body: ListView(
           children: <Widget>[
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(
-                  horizontal: common_gap, vertical: common_gap),
-              leading: AspectRatio(
-                aspectRatio: 1,
-                child: Image.file(
-                  imageFile!,
-                  //width: size!.width / 6,
-                  //height: size!.height / 6,
-                  fit: BoxFit.fill,
-                ),
-              ),
-              title: TextFormField(
-                decoration: InputDecoration(
-                  hintText: 'sdfsdf',
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
+            _captionWithImage(),
+            _divider,
+            _sectionButton('Tag People'),
+            _divider,
+            _sectionButton('Add Location'),
+            _divider,
           ],
         ));
+  }
+
+  Divider get _divider => Divider(
+        color: Colors.grey[300],
+        thickness: 1,
+        height: 1,
+      );
+
+  ListTile _sectionButton(String title) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: common_gap),
+      leading: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontWeight: FontWeight.w400),
+            //textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+      trailing: IconButton(
+        onPressed: () {},
+        icon: Icon(Icons.navigate_next),
+        color: Colors.grey[300],
+        iconSize: 30,
+        padding: EdgeInsets.zero,
+        constraints: BoxConstraints(),
+      ),
+    );
+  }
+
+  ListTile _captionWithImage() {
+    return ListTile(
+      contentPadding:
+          EdgeInsets.symmetric(horizontal: common_gap, vertical: common_gap),
+      leading: AspectRatio(
+        aspectRatio: 1,
+        child: Image.file(
+          imageFile!,
+          //width: size!.width / 6,
+          //height: size!.height / 6,
+          fit: BoxFit.fill,
+        ),
+      ),
+      title: TextFormField(
+        decoration: InputDecoration(
+          hintText: 'sdfsdf',
+          border: InputBorder.none,
+        ),
+      ),
+    );
   }
 }
