@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
 import 'package:flutter_bottom_navigationbar/constants/screen_size.dart';
+import 'package:flutter_bottom_navigationbar/repo/image_network_repository.dart';
 import 'package:flutter_bottom_navigationbar/widgets/comment.dart';
 import 'package:flutter_bottom_navigationbar/widgets/rounded_avatar.dart';
 import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
@@ -75,22 +76,31 @@ class Post extends StatelessWidget {
     );
   }
 
-  CachedNetworkImage _postImage() {
-    return CachedNetworkImage(
-        imageUrl: 'https://picsum.photos/id/$index/2000/2000',
-        placeholder: (context, url) => y_ProgressIndicator(
-              containerSize: size?.width,
-            ),
-        errorWidget: (context, url, error) => Icon(Icons.error),
-        imageBuilder: (BuildContext buildContext, ImageProvider imageProvider) {
-          return AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                  image:
-                      DecorationImage(image: imageProvider, fit: BoxFit.fill)),
-            ),
-          );
+  Widget _postImage() {
+    Widget progress = y_ProgressIndicator(containerSize: size?.width);
+    return FutureBuilder<dynamic>(
+        future: imageNetworkRepository
+            .getPostImageUrl("1655885984078_2h5zJbA82ChTIjZiU65NZwrEXPC2"),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return CachedNetworkImage(
+                imageUrl: snapshot.data.toString(),
+                placeholder: (context, url) => progress,
+                errorWidget: (context, url, error) => Icon(Icons.error),
+                imageBuilder:
+                    (BuildContext buildContext, ImageProvider imageProvider) {
+                  return AspectRatio(
+                    aspectRatio: 1,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: imageProvider, fit: BoxFit.fill)),
+                    ),
+                  );
+                });
+          } else {
+            return progress;
+          }
         });
   }
 
