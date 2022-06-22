@@ -1,25 +1,29 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bottom_navigationbar/repo/helper/image_helper.dart';
 
 class ImageNetworkRepository {
-  Future<void> uploadImageNCreateNewPost(File originImage) async {
+  Future<TaskSnapshot?> uploadImageNCreateNewPost(File originImage,
+      {@required String? postKey}) async {
     try {
       final File resized = await compute(getResizedImage, originImage);
-      originImage
-          .length()
-          .then((value) => print('### original image size : $value'));
-      resized
-          .length()
-          .then((value) => print('### resized image size : $value'));
-      print('### is Logged : originImage : ' + originImage.toString());
-      print('### is Logged : getResizedImage : ' +
-          getResizedImage(originImage).toString());
-
-      await Future.delayed(Duration(seconds: 3));
-    } catch (e) {}
+      // final FirebaseSto rage storage = FirebaseStorage.instanceFor();
+      final Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child(_getImagePathByPostKey(postKey!));
+      final UploadTask uploadTask = storageReference.putFile(resized);
+      final listResult = await storageReference.listAll();
+      print('### is Logged : uploadTask.snapshot : ' +
+          uploadTask.snapshot.toString());
+      return uploadTask.snapshot;
+    } on FirebaseException catch (e) {
+      print("### is Logged : e : '${e.code}' : ${e.message}");
+    }
   }
+
+  String _getImagePathByPostKey(String postKey) => 'post/$postKey/post.jpg';
 }
 
 ImageNetworkRepository imageNetworkRepository = ImageNetworkRepository();

@@ -71,9 +71,14 @@ class _SharePostScreenState extends State<SharePostScreen> {
                       builder: (_) => y_ProgressIndicator(),
                       isDismissible: false,
                       enableDrag: false);
-                  await imageNetworkRepository
-                      .uploadImageNCreateNewPost(widget.imageFile!);
+                  await imageNetworkRepository.uploadImageNCreateNewPost(
+                      widget.imageFile!,
+                      postKey: widget.postKey);
                   Navigator.of(context).pop();
+                  print('### is Logged : imageFile : ' +
+                      widget.imageFile.toString());
+                  print(
+                      '### is Logged : postKey : ' + widget.postKey.toString());
                 },
                 child: Text(
                   'share',
