@@ -6,6 +6,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
 import 'package:flutter_bottom_navigationbar/repo/image_network_repository.dart';
+import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
 import 'package:flutter_tags_x/flutter_tags_x.dart';
 
 class SharePostScreen extends StatefulWidget {
@@ -56,11 +57,6 @@ class _SharePostScreenState extends State<SharePostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    imageNetworkRepository.uploadImageNCreateNewPost(widget.imageFile!);
-    print('### is Logged : image : ' +
-        imageNetworkRepository
-            .uploadImageNCreateNewPost(widget.imageFile!)
-            .toString());
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -69,7 +65,16 @@ class _SharePostScreenState extends State<SharePostScreen> {
           ),
           actions: [
             TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (_) => y_ProgressIndicator(),
+                      isDismissible: false,
+                      enableDrag: false);
+                  await imageNetworkRepository
+                      .uploadImageNCreateNewPost(widget.imageFile!);
+                  Navigator.of(context).pop();
+                },
                 child: Text(
                   'share',
                   style: TextStyle(color: Colors.blue),

@@ -16,6 +16,8 @@ class ImageNetworkRepository {
       print('### is Logged : originImage : ' + originImage.toString());
       print('### is Logged : getResizedImage : ' +
           getResizedImage(originImage).toString());
+
+      await Future.delayed(Duration(seconds: 3));
     } catch (e) {}
   }
 }
