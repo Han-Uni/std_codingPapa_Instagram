@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
+import 'package:flutter_bottom_navigationbar/repo/image_network_repository.dart';
 import 'package:flutter_tags_x/flutter_tags_x.dart';
 
 class SharePostScreen extends StatefulWidget {
@@ -55,6 +56,11 @@ class _SharePostScreenState extends State<SharePostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    imageNetworkRepository.uploadImageNCreateNewPost(widget.imageFile!);
+    print('### is Logged : image : ' +
+        imageNetworkRepository
+            .uploadImageNCreateNewPost(widget.imageFile!)
+            .toString());
     return Scaffold(
         appBar: AppBar(
           title: Text(

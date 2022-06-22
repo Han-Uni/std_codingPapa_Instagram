@@ -7,6 +7,6 @@ File getResizedImage(File originImage) {
 
   File resizedFile =
       File(originImage.path.substring(0, originImage.path.length - 3) + "jpg");
-  resizedFile.writeAsBytesSync(encodeJpg(resizedImage, quality: 50));
+  resizedFile.writeAsBytesSync(encodeJpg(resizedImage, quality: 30));
   return resizedFile;
 }
