@@ -14,6 +14,7 @@ const KEY_USERNAME = 'user_name';
 const KEY_COMMENT = 'comment';
 const KEY_COMMENTTIME = 'comment_time';
 
+const KEY_POSTKEY = 'post_key';
 const KEY_POSTIMG = 'post_img';
 const KEY_POSTURL = 'post_url';
 const KEY_CAPTION = 'caption';

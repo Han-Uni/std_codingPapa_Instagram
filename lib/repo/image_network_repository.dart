@@ -9,11 +9,19 @@ class ImageNetworkRepository {
       {@required String? postKey}) async {
     try {
       final File resized = await compute(getResizedImage, originImage);
-      // final FirebaseSto rage storage = FirebaseStorage.instanceFor();
+      // final FirebaseStorage storage = FirebaseStorage.instanceFor();
       final Reference storageReference = FirebaseStorage.instance
           .ref()
           .child(_getImagePathByPostKey(postKey!));
       final UploadTask uploadTask = storageReference.putFile(resized);
+
+      originImage
+          .length()
+          .then((value) => print('### is Logged : originImage :  $value'));
+      resized
+          .length()
+          .then((value) => print('### is Logged : resized : $value'));
+
       final listResult = await storageReference.listAll();
       print('### is Logged : uploadTask.snapshot : ' +
           uploadTask.snapshot.toString());

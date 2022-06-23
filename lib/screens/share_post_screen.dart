@@ -75,8 +75,6 @@ class _SharePostScreenState extends State<SharePostScreen> {
                       widget.imageFile!,
                       postKey: widget.postKey);
                   Navigator.of(context).pop();
-                  print('### is Logged : imageFile : ' +
-                      widget.imageFile.toString());
                   print(
                       '### is Logged : postKey : ' + widget.postKey.toString());
                 },
