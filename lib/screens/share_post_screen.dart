@@ -5,9 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/post_model.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
 import 'package:flutter_bottom_navigationbar/repo/image_network_repository.dart';
+import 'package:flutter_bottom_navigationbar/repo/post_network_repository.dart';
 import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
 import 'package:flutter_tags_x/flutter_tags_x.dart';
+import 'package:provider/provider.dart';
 
 class SharePostScreen extends StatefulWidget {
   final File? imageFile;
@@ -71,9 +76,18 @@ class _SharePostScreenState extends State<SharePostScreen> {
                       builder: (_) => y_ProgressIndicator(),
                       isDismissible: false,
                       enableDrag: false);
-                  await imageNetworkRepository.uploadImageNCreateNewPost(
-                      widget.imageFile!,
+                  await imageNetworkRepository.uploadImage(widget.imageFile!,
                       postKey: widget.postKey);
+
+                  UserModel userModel =
+                      Provider.of<UserModelState>(context, listen: false)
+                          .userModel;
+
+                  await postNetworkRepository.createNewPost(
+                      widget.postKey!,
+                      PostModel.getMapForCreatePost(
+                          userKey: userModel.userKey,
+                          username: userModel.username));
                   Navigator.of(context).pop();
                   print(
                       '### is Logged : postKey : ' + widget.postKey.toString());
