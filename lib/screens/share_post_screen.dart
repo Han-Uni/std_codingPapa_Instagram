@@ -27,6 +27,8 @@ class SharePostScreen extends StatefulWidget {
 }
 
 class _SharePostScreenState extends State<SharePostScreen> {
+  TextEditingController _textEditingController = TextEditingController();
+
   List<String> _tagItems = [
     "approval",
     "pigeon",
@@ -61,6 +63,12 @@ class _SharePostScreenState extends State<SharePostScreen> {
   ];
 
   @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -87,8 +95,12 @@ class _SharePostScreenState extends State<SharePostScreen> {
                       widget.postKey!,
                       PostModel.getMapForCreatePost(
                           userKey: userModel.userKey,
-                          username: userModel.username));
+                          username: userModel.username,
+                          caption: _textEditingController.text));
+                  // dismiss progress(Modal Bottom Sheet)
                   Navigator.of(context).pop();
+                  // 현재창 나오기
+                  Navigator.pop(context);
                   print(
                       '### is Logged : postKey : ' + widget.postKey.toString());
                 },
@@ -176,6 +188,8 @@ class _SharePostScreenState extends State<SharePostScreen> {
         ),
       ),
       title: TextFormField(
+        controller: _textEditingController,
+        autofocus: true,
         decoration: InputDecoration(
           hintText: 'Write acaption...',
           border: InputBorder.none,
