@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bottom_navigationbar/constants/firestore_keys.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/post_model.dart';
 import 'package:flutter_bottom_navigationbar/repo/helper/transformers.dart';
+import 'package:rxdart/rxdart.dart';
 
 class PostNetworkRepository with Transformers {
   Future<void> createNewPost(
@@ -33,12 +35,27 @@ class PostNetworkRepository with Transformers {
     }
   }
 
-  Stream<void> getPostsFromSpecificUser(String userKey) {
+  Stream<List<PostModel>> getPostsFromSpecificUser(String userKey) {
     return FirebaseFirestore.instance
         .collection(COLLECTION_POSTS)
         .where(KEY_USERKEY, isEqualTo: userKey)
         .snapshots()
         .transform(toPosts);
+  }
+
+  Stream<List<PostModel>> fetchPostsFromAllFollowers(List<dynamic> followers) {
+    final CollectionReference collectionReference =
+        FirebaseFirestore.instance.collection(COLLECTION_POSTS);
+    List<Stream<List<PostModel>>> streams = [];
+    for (final follower in followers) {
+      streams.add(collectionReference
+          .where(KEY_USERKEY, isEqualTo: follower)
+          .snapshots()
+          .transform(toPosts));
+    }
+    return CombineLatestStream.list<List<PostModel>>(streams)
+        .transform(combineListOfPosts)
+        .transform(latestToTop);
   }
 }
 

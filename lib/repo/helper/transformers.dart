@@ -34,4 +34,24 @@ class Transformers {
     });
     sink.add(posts);
   });
+
+  final combineListOfPosts =
+      StreamTransformer<List<List<PostModel>>, List<PostModel>>.fromHandlers(
+          handleData: (listOfPosts, sink) async {
+    List<PostModel> posts = [];
+
+    for (final postList in listOfPosts) {
+      posts.addAll(postList);
+    }
+    sink.add(posts);
+  });
+
+  final latestToTop =
+      StreamTransformer<List<PostModel>, List<PostModel>>.fromHandlers(
+          handleData: (posts, sink) async {
+    // a.postTime.compareTo(b.postTime) : 비교한 값 중 큰 값은 아래로 내려감.
+    // 비교한 값 중 큰 값을 위로 올림.
+    posts.sort((a, b) => b.postTime.compareTo(a.postTime));
+    sink.add(posts);
+  });
 }
