@@ -199,10 +199,9 @@ class FirebaseAuthState extends ChangeNotifier {
     final UserCredential authResult =
         await _firebaseAuth.signInWithCredential(credential);
 
-    final User? user = authResult.user;
     _user = authResult.user;
 
-    if (user == null) {
+    if (_user == null) {
       simpleSnackbar(context, 'Error while facebook sign in');
     } else {
       await userNetworkRepository.attemptCreateUser(

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bottom_navigationbar/models/firestore/user_model.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
 import 'package:flutter_bottom_navigationbar/repo/user_network_repository.dart';
 import 'package:flutter_bottom_navigationbar/widgets/rounded_avatar.dart';
 import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   SearchScreen({Key? key}) : super(key: key);
@@ -26,52 +28,67 @@ class _SearchScreenState extends State<SearchScreen> {
           stream: userNetworkRepository.getAllUsersWithoutMe(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return SafeArea(
-                  child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        UserModel userModel = snapshot.data![index];
-                        return ListTile(
-                          leading: RoundedAvatar(
-                            size: 55,
-                          ),
-                          title: Text(userModel.username),
-                          subtitle:
-                              Text('this is user bio of ${userModel.username}'),
-                          trailing: InkWell(
-                            onTap: () {
-                              setState(() {
-                                // followings[index] = !followings[index];
-                              });
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 30,
-                              width: 80,
-                              decoration: BoxDecoration(
-                                  color:
-                                      // followings[index] ? Colors.redAccent[100]:
-                                      Colors.indigoAccent[100],
-                                  border: Border.all(
-                                      color:
-                                          // followings[index] ? Colors.redAccent :
-                                          Colors.indigoAccent,
-                                      width: 0.5),
-                                  borderRadius: BorderRadius.circular(9)),
+              return SafeArea(child: Consumer<UserModelState>(builder:
+                  (BuildContext context, UserModelState myUserModelState,
+                      Widget? child) {
+                return ListView.separated(
+                    itemBuilder: (context, index) {
+                      UserModel otherUser = snapshot.data![index];
+                      bool amIFollowing = myUserModelState
+                          .amIFollwingThisUser(otherUser.userKey);
+                      return ListTile(
+                        leading: RoundedAvatar(
+                          size: 55,
+                        ),
+                        title: Text(otherUser.username),
+                        subtitle:
+                            Text('this is user bio of ${otherUser.username}'),
+                        trailing: InkWell(
+                          onTap: () {
+                            setState(() {
+                              amIFollowing
+                                  ? userNetworkRepository.unFollowUser(
+                                      myUserKey:
+                                          myUserModelState.userModel.userKey,
+                                      otherUserKey: otherUser.userKey)
+                                  : userNetworkRepository.followUser(
+                                      myUserKey:
+                                          myUserModelState.userModel.userKey,
+                                      otherUserKey: otherUser.userKey);
+                            });
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 30,
+                            width: 80,
+                            decoration: BoxDecoration(
+                                color: amIFollowing
+                                    ? Colors.indigoAccent[100]
+                                    : Colors.redAccent[100],
+                                border: Border.all(
+                                    color: amIFollowing
+                                        ? Colors.indigoAccent
+                                        : Colors.redAccent,
+                                    width: 0.5),
+                                borderRadius: BorderRadius.circular(9)),
+                            child: FittedBox(
                               child: Text(
-                                'following',
+                                amIFollowing ? 'following' : 'not following',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16),
                               ),
                             ),
                           ),
-                        );
-                      },
-                      separatorBuilder: (context, index) {
-                        return Divider(
-                          color: Colors.grey[30],
-                        );
-                      },
-                      itemCount: snapshot.data!.length));
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        color: Colors.grey[30],
+                      );
+                    },
+                    itemCount: snapshot.data!.length);
+              }));
             } else {
               return y_ProgressIndicator();
             }

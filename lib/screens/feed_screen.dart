@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bottom_navigationbar/models/firebase_auth_state.dart';
 import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
 import 'package:flutter_bottom_navigationbar/repo/user_network_repository.dart';
 import 'package:flutter_bottom_navigationbar/widgets/post.dart';
@@ -27,7 +28,10 @@ class FeedScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Provider.of<FirebaseAuthState>(context, listen: false)
+                    .signOut();
+              },
               icon: ImageIcon(AssetImage('assets/images/actionbar_camera.png')),
               color: Colors.black87,
             ),

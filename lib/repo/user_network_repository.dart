@@ -29,6 +29,46 @@ class UserNetworkRepository with Transformers {
         .snapshots()
         .transform(toUsersExceptMe);
   }
+
+  Future<void> followUser({String? myUserKey, String? otherUserKey}) async {
+    final DocumentReference myUserRef =
+        FirebaseFirestore.instance.collection(COLLECTION_USERS).doc(myUserKey);
+    final DocumentSnapshot mySnapshot = await myUserRef.get();
+    final DocumentReference otherUserRef = FirebaseFirestore.instance
+        .collection(COLLECTION_USERS)
+        .doc(otherUserKey);
+    final DocumentSnapshot otherSnapshot = await otherUserRef.get();
+
+    FirebaseFirestore.instance.runTransaction((tx) async {
+      if (mySnapshot.exists && otherSnapshot.exists) {
+        await tx.update(myUserRef, {
+          KEY_FOLLOWINGS: FieldValue.arrayUnion([otherUserKey])
+        });
+        int currentFollowers = otherSnapshot[KEY_FOLLOWERS];
+        await tx.update(otherUserRef, {KEY_FOLLOWERS: currentFollowers + 1});
+      }
+    });
+  }
+
+  Future<void> unFollowUser({String? myUserKey, String? otherUserKey}) async {
+    final DocumentReference myUserRef =
+        FirebaseFirestore.instance.collection(COLLECTION_USERS).doc(myUserKey);
+    final DocumentSnapshot mySnapshot = await myUserRef.get();
+    final DocumentReference otherUserRef = FirebaseFirestore.instance
+        .collection(COLLECTION_USERS)
+        .doc(otherUserKey);
+    final DocumentSnapshot otherSnapshot = await otherUserRef.get();
+
+    FirebaseFirestore.instance.runTransaction((tx) async {
+      if (mySnapshot.exists && otherSnapshot.exists) {
+        await tx.update(myUserRef, {
+          KEY_FOLLOWINGS: FieldValue.arrayRemove([otherUserKey])
+        });
+        int currentFollowers = otherSnapshot[KEY_FOLLOWERS];
+        await tx.update(otherUserRef, {KEY_FOLLOWERS: currentFollowers - 1});
+      }
+    });
+  }
 }
 
 UserNetworkRepository userNetworkRepository = UserNetworkRepository();

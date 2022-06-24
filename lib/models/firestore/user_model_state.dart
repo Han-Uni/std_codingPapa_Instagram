@@ -26,4 +26,11 @@ class UserModelState extends ChangeNotifier {
     _currentStreamSub = null;
     _userModel = null;
   }
+
+  bool amIFollwingThisUser(String otherUserKey) {
+    if (_userModel == null ||
+        _userModel!.followings == null ||
+        _userModel!.followings.isEmpty) return false;
+    return _userModel!.followings.contains(otherUserKey);
+  }
 }
