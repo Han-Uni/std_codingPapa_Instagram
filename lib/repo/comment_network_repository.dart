@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bottom_navigationbar/constants/firestore_keys.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/comment_model.dart';
 import 'package:flutter_bottom_navigationbar/repo/helper/transformers.dart';
 
 class CommentNetworkRepository with Transformers {
@@ -24,5 +25,15 @@ class CommentNetworkRepository with Transformers {
         });
       }
     });
+  }
+
+  Stream<List<CommentModel>> fetchAllComments(String postKey) {
+    return FirebaseFirestore.instance
+        .collection(COLLECTION_POSTS)
+        .doc(postKey)
+        .collection(COLLECTION_COMMENTS)
+        .orderBy(KEY_COMMENTTIME)
+        .snapshots()
+        .transform(toComments);
   }
 }
