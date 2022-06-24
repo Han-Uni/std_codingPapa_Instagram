@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
+import 'package:flutter_bottom_navigationbar/repo/user_network_repository.dart';
 import 'package:flutter_bottom_navigationbar/widgets/post.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +33,9 @@ class FeedScreen extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                // Provider.of<UserModelState>(context, listen: false).clear();
+                userNetworkRepository.getAllUsersWithoutMe().listen((users) {
+                  print('### is Logged : users : $users');
+                });
               },
               icon: ImageIcon(AssetImage('assets/images/direct_message.png')),
               color: Colors.black,

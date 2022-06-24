@@ -22,6 +22,13 @@ class UserNetworkRepository with Transformers {
         // 현재 타입은 UserModel을 받아와야하는데 snapshots의 타입은 DocumentSnapshot이기 때문에 transform을 사용하여 변화줌
         .transform(toUser);
   }
+
+  Stream<List<UserModel>> getAllUsersWithoutMe() {
+    return FirebaseFirestore.instance
+        .collection(COLLECTION_USERS)
+        .snapshots()
+        .transform(toUsersExceptMe);
+  }
 }
 
 UserNetworkRepository userNetworkRepository = UserNetworkRepository();
