@@ -31,16 +31,32 @@ class Post extends StatelessWidget {
         _postLikes(),
         _postCaption(),
         _lastComment(),
+        _moreComments(context),
         // TextSpan을 사용할때는 Text color를 설정해줘야함. 초기값은 main의 primarySwatch 색상을 따라감.
       ],
     );
   }
 
+  Widget _moreComments(BuildContext context) {
+    return Visibility(
+        visible:
+            (postModel.numOfComments != null && postModel.numOfComments >= 2),
+        child: GestureDetector(
+          onTap: () {
+            _goToComments(context);
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: common_gap),
+            child: Text('${postModel.numOfComments - 1} more comments... '),
+          ),
+        ));
+  }
+
   Widget _lastComment() {
     // RichText : 한개의 텍스트 안에 여러가지 텍스트 스타일을 가지고 있는 것.
     return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: common_gap, vertical: common_xxs_gap),
+      padding: const EdgeInsets.only(
+          left: common_gap, right: common_gap, top: common_xxs_gap),
       child: Comment(
         userName: postModel.lastCommentor,
         text: postModel.lastComment,
@@ -80,10 +96,7 @@ class Post extends StatelessWidget {
             icon: ImageIcon(AssetImage('assets/images/bookmark.png'))),
         IconButton(
             onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return CommentsScreen(postModel.postKey);
-              }));
+              _goToComments(context);
             },
             icon: ImageIcon(AssetImage('assets/images/comment.png'))),
         IconButton(
@@ -95,6 +108,13 @@ class Post extends StatelessWidget {
             icon: ImageIcon(AssetImage('assets/images/heart_selected.png'))),
       ],
     );
+  }
+
+  _goToComments(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
+      return CommentsScreen(postModel.postKey);
+    }));
   }
 
   Widget _postImage() {

@@ -71,6 +71,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     child: TextFormField(
                       controller: _textEditingController,
                       cursorColor: Colors.black,
+                      autofocus: true,
                       decoration: InputDecoration(
                           hintText: 'Add a commnet...',
                           border: InputBorder.none),
