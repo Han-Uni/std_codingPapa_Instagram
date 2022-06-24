@@ -11,7 +11,6 @@ class UserModelState extends ChangeNotifier {
   StreamSubscription<UserModel>? get currentStreamSub => _currentStreamSub;
 
   set userModel(UserModel userModel) {
-    // if (_userModel == null)
     _userModel = userModel;
 
     notifyListeners();
@@ -20,9 +19,9 @@ class UserModelState extends ChangeNotifier {
   set currentStreamSub(StreamSubscription<UserModel>? currentStremSub) =>
       _currentStreamSub = currentStremSub;
 
-  clear() {
+  clear() async {
     if (_currentStreamSub != null) {
-      _currentStreamSub?.cancel();
+      await _currentStreamSub?.cancel();
       // _currentStreamSub = null;
     } else {}
     _currentStreamSub = null;

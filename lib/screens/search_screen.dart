@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bottom_navigationbar/models/firebase_auth_state.dart';
 import 'package:flutter_bottom_navigationbar/models/firestore/user_model.dart';
 import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
 import 'package:flutter_bottom_navigationbar/repo/user_network_repository.dart';
@@ -21,7 +22,19 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Follow/UnFollow'),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(''),
+            Text('Follow/UnFollow'),
+            GestureDetector(
+                onTap: () {
+                  Provider.of<FirebaseAuthState>(context, listen: false)
+                      .signOut();
+                },
+                child: Icon(Icons.access_alarm))
+          ],
+        ),
         elevation: 1,
       ),
       body: StreamBuilder<List<UserModel>>(
