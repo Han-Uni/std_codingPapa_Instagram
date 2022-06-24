@@ -78,32 +78,7 @@ class _SharePostScreenState extends State<SharePostScreen> {
           ),
           actions: [
             TextButton(
-                onPressed: () async {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (_) => y_ProgressIndicator(),
-                      isDismissible: false,
-                      enableDrag: false);
-                  await imageNetworkRepository.uploadImage(widget.imageFile!,
-                      postKey: widget.postKey);
-
-                  UserModel userModel =
-                      Provider.of<UserModelState>(context, listen: false)
-                          .userModel;
-
-                  await postNetworkRepository.createNewPost(
-                      widget.postKey!,
-                      PostModel.getMapForCreatePost(
-                          userKey: userModel.userKey,
-                          username: userModel.username,
-                          caption: _textEditingController.text));
-                  // dismiss progress(Modal Bottom Sheet)
-                  Navigator.of(context).pop();
-                  // 현재창 나오기
-                  Navigator.pop(context);
-                  print(
-                      '### is Logged : postKey : ' + widget.postKey.toString());
-                },
+                onPressed: sharePostProcedure,
                 child: Text(
                   'share',
                   style: TextStyle(color: Colors.blue),
@@ -125,6 +100,41 @@ class _SharePostScreenState extends State<SharePostScreen> {
             _divider,
           ],
         ));
+  }
+
+  void sharePostProcedure() async {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) => y_ProgressIndicator(),
+        isDismissible: false,
+        enableDrag: false);
+    await imageNetworkRepository.uploadImage(widget.imageFile!,
+        postKey: widget.postKey);
+
+    UserModel userModel =
+        Provider.of<UserModelState>(context, listen: false).userModel;
+
+    await postNetworkRepository.createNewPost(
+        widget.postKey!,
+        PostModel.getMapForCreatePost(
+            userKey: userModel.userKey,
+            username: userModel.username,
+            caption: _textEditingController.text));
+
+    String postImgLink =
+        await imageNetworkRepository.getPostImageUrl(widget.postKey!);
+
+    await postNetworkRepository.updatePostImageUrl(
+        postKey: widget.postKey, postImg: postImgLink);
+
+    // dismiss progress(Modal Bottom Sheet)
+    // Navigator.of(context).pop() == Navigator.pop(context);
+    Navigator.of(context).pop();
+    // 현재창 나오기
+    Navigator.pop(context);
+    // 포스팅되어있는 메인으로 나오기
+    Navigator.pop(context);
+    print('### is Logged : postKey : ' + widget.postKey.toString());
   }
 
   Tags _tags() {
@@ -190,6 +200,7 @@ class _SharePostScreenState extends State<SharePostScreen> {
       title: TextFormField(
         controller: _textEditingController,
         autofocus: true,
+        cursorColor: Colors.black,
         decoration: InputDecoration(
           hintText: 'Write acaption...',
           border: InputBorder.none,

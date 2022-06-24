@@ -23,6 +23,7 @@ class ImageNetworkRepository {
           .then((value) => print('### is Logged : resized : $value'));
 
       final listResult = await storageReference.listAll();
+
       print('### is Logged : uploadTask.snapshot : ' +
           uploadTask.snapshot.toString());
       return uploadTask.snapshot;
@@ -34,6 +35,8 @@ class ImageNetworkRepository {
   String _getImagePathByPostKey(String postKey) => 'post/$postKey/post.jpg';
 
   Future<dynamic> getPostImageUrl(String postKey) {
+    print(
+        '### is Logged : getPostImageUrl : ${FirebaseStorage.instance.ref().child(_getImagePathByPostKey(postKey)).getDownloadURL().toString()}');
     return FirebaseStorage.instance
         .ref()
         .child(_getImagePathByPostKey(postKey))

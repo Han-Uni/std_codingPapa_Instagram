@@ -21,6 +21,16 @@ class PostNetworkRepository {
       }
     });
   }
+
+  Future<void> updatePostImageUrl({String? postImg, String? postKey}) async {
+    final DocumentReference postRef =
+        FirebaseFirestore.instance.collection(COLLECTION_POSTS).doc(postKey);
+    final DocumentSnapshot postSnapshot = await postRef.get();
+
+    if (postSnapshot.exists) {
+      await postRef.update({KEY_POSTIMG: postImg});
+    }
+  }
 }
 
 PostNetworkRepository postNetworkRepository = PostNetworkRepository();
