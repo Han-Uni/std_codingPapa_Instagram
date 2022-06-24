@@ -4,11 +4,14 @@ import 'dart:io';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bottom_navigationbar/constants/screen_size.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
 import 'package:flutter_bottom_navigationbar/screens/camera_screen.dart';
 import 'package:flutter_bottom_navigationbar/screens/feed_screen.dart';
 import 'package:flutter_bottom_navigationbar/screens/profile_screen.dart';
 import 'package:flutter_bottom_navigationbar/screens/search_screen.dart';
+import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -30,7 +33,15 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   static final List<Widget> _screens = <Widget>[
-    FeedScreen(),
+    Consumer<UserModelState>(builder:
+        (BuildContext context, UserModelState userModelState, Widget? child) {
+      if (userModelState == null ||
+          userModelState.userModel.followings == null ||
+          userModelState.userModel.followings.isEmpty) {
+        return y_ProgressIndicator();
+      } else
+        return FeedScreen(userModelState.userModel.followings);
+    }),
     SearchScreen(),
     Container(color: Colors.indigoAccent),
     Container(color: Colors.limeAccent),

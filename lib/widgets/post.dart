@@ -5,16 +5,17 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
 import 'package:flutter_bottom_navigationbar/constants/screen_size.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/post_model.dart';
 import 'package:flutter_bottom_navigationbar/repo/image_network_repository.dart';
 import 'package:flutter_bottom_navigationbar/widgets/comment.dart';
 import 'package:flutter_bottom_navigationbar/widgets/rounded_avatar.dart';
 import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
 
 class Post extends StatelessWidget {
-  final int index;
+  final PostModel postModel;
 
   Post(
-    this.index, {
+    this.postModel, {
     Key? key,
   }) : super(key: key);
 
@@ -28,8 +29,22 @@ class Post extends StatelessWidget {
         _postActions(),
         _postLikes(),
         _postCaption(),
+        _lastComment(),
         // TextSpan을 사용할때는 Text color를 설정해줘야함. 초기값은 main의 primarySwatch 색상을 따라감.
       ],
+    );
+  }
+
+  Widget _lastComment() {
+    // RichText : 한개의 텍스트 안에 여러가지 텍스트 스타일을 가지고 있는 것.
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+          horizontal: common_gap, vertical: common_xxs_gap),
+      child: Comment(
+        userName: postModel.lastCommentor,
+        text: postModel.lastComment,
+        showImage: false,
+      ),
     );
   }
 
@@ -39,8 +54,8 @@ class Post extends StatelessWidget {
       padding: const EdgeInsets.symmetric(
           horizontal: common_gap, vertical: common_xxs_gap),
       child: Comment(
-        userName: 'testingUser',
-        text: 'i am hungry!!!',
+        userName: postModel.username,
+        text: postModel.caption,
         showImage: false,
       ),
     );
@@ -50,7 +65,7 @@ class Post extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: common_gap),
       child: Text(
-        '12000 likes',
+        '${postModel.numOfLikes == null ? 0 : postModel.numOfLikes.length}',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
     );
@@ -78,29 +93,19 @@ class Post extends StatelessWidget {
 
   Widget _postImage() {
     Widget progress = y_ProgressIndicator(containerSize: size?.width);
-    return FutureBuilder<dynamic>(
-        future: imageNetworkRepository
-            .getPostImageUrl("1655885984078_2h5zJbA82ChTIjZiU65NZwrEXPC2"),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return CachedNetworkImage(
-                imageUrl: snapshot.data.toString(),
-                placeholder: (context, url) => progress,
-                errorWidget: (context, url, error) => Icon(Icons.error),
-                imageBuilder:
-                    (BuildContext buildContext, ImageProvider imageProvider) {
-                  return AspectRatio(
-                    aspectRatio: 1,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: imageProvider, fit: BoxFit.fill)),
-                    ),
-                  );
-                });
-          } else {
-            return progress;
-          }
+    return CachedNetworkImage(
+        imageUrl: postModel.postImg,
+        placeholder: (context, url) => progress,
+        errorWidget: (context, url, error) => Icon(Icons.error),
+        imageBuilder: (BuildContext buildContext, ImageProvider imageProvider) {
+          return AspectRatio(
+            aspectRatio: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                  image:
+                      DecorationImage(image: imageProvider, fit: BoxFit.fill)),
+            ),
+          );
         });
   }
 
@@ -111,7 +116,7 @@ class Post extends StatelessWidget {
           padding: const EdgeInsets.all(common_xxs_gap),
           child: RoundedAvatar(),
         ),
-        Expanded(child: Text('userName')),
+        Expanded(child: Text(postModel.username)),
         IconButton(
           icon: Icon(Icons.more_horiz),
           onPressed: () {},
