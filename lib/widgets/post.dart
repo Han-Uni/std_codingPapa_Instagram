@@ -6,11 +6,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
 import 'package:flutter_bottom_navigationbar/constants/screen_size.dart';
 import 'package:flutter_bottom_navigationbar/models/firestore/post_model.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/user_model_state.dart';
 import 'package:flutter_bottom_navigationbar/repo/image_network_repository.dart';
+import 'package:flutter_bottom_navigationbar/repo/post_network_repository.dart';
 import 'package:flutter_bottom_navigationbar/screens/comments_screen.dart';
 import 'package:flutter_bottom_navigationbar/widgets/comment.dart';
 import 'package:flutter_bottom_navigationbar/widgets/rounded_avatar.dart';
 import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
+import 'package:provider/provider.dart';
 
 class Post extends StatelessWidget {
   final PostModel postModel;
@@ -82,7 +85,7 @@ class Post extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: common_gap),
       child: Text(
-        '${postModel.numOfLikes == null ? 0 : postModel.numOfLikes.length}',
+        '${postModel.numOfLikes == null ? 0 : postModel.numOfLikes.length} likes',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
     );
@@ -103,9 +106,22 @@ class Post extends StatelessWidget {
             onPressed: null,
             icon: ImageIcon(AssetImage('assets/images/direct_message.png'))),
         Spacer(),
-        IconButton(
-            onPressed: null,
-            icon: ImageIcon(AssetImage('assets/images/heart_selected.png'))),
+        Consumer<UserModelState>(
+          builder: (context, UserModelState, child) {
+            return IconButton(
+                onPressed: () {
+                  postNetworkRepository.toggleLike(
+                      postModel.postKey, UserModelState.userModel.userKey);
+                },
+                icon: ImageIcon(
+                  AssetImage(postModel.numOfLikes
+                          .contains(UserModelState.userModel.userKey)
+                      ? 'assets/images/heart_selected.png'
+                      : 'assets/images/heart.png'),
+                  color: Colors.redAccent,
+                ));
+          },
+        ),
       ],
     );
   }
