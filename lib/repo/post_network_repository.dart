@@ -57,6 +57,23 @@ class PostNetworkRepository with Transformers {
         .transform(combineListOfPosts)
         .transform(latestToTop);
   }
+
+  Future<void> toggleLike(String postKey, String userKey) async {
+    final DocumentReference postRef =
+        FirebaseFirestore.instance.collection(COLLECTION_POSTS).doc(postKey);
+    final DocumentSnapshot postSnapshot = await postRef.get();
+    if (postSnapshot.exists) {
+      if (postSnapshot[KEY_NUMOFLIKES].contains(userKey)) {
+        postRef.update({
+          KEY_NUMOFLIKES: FieldValue.arrayRemove([userKey])
+        });
+      } else {
+        postRef.update({
+          KEY_NUMOFLIKES: FieldValue.arrayUnion([userKey])
+        });
+      }
+    }
+  }
 }
 
 PostNetworkRepository postNetworkRepository = PostNetworkRepository();
