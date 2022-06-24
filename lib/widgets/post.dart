@@ -7,6 +7,7 @@ import 'package:flutter_bottom_navigationbar/constants/common_size.dart';
 import 'package:flutter_bottom_navigationbar/constants/screen_size.dart';
 import 'package:flutter_bottom_navigationbar/models/firestore/post_model.dart';
 import 'package:flutter_bottom_navigationbar/repo/image_network_repository.dart';
+import 'package:flutter_bottom_navigationbar/screens/comments_screen.dart';
 import 'package:flutter_bottom_navigationbar/widgets/comment.dart';
 import 'package:flutter_bottom_navigationbar/widgets/rounded_avatar.dart';
 import 'package:flutter_bottom_navigationbar/widgets/y_progress_indicator.dart';
@@ -26,7 +27,7 @@ class Post extends StatelessWidget {
       children: <Widget>[
         _postHeader(),
         _postImage(),
-        _postActions(),
+        _postActions(context),
         _postLikes(),
         _postCaption(),
         _lastComment(),
@@ -71,14 +72,19 @@ class Post extends StatelessWidget {
     );
   }
 
-  Row _postActions() {
+  Row _postActions(BuildContext context) {
     return Row(
-      children: const <Widget>[
+      children: <Widget>[
         IconButton(
             onPressed: null,
             icon: ImageIcon(AssetImage('assets/images/bookmark.png'))),
         IconButton(
-            onPressed: null,
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (BuildContext context) {
+                return CommentsScreen();
+              }));
+            },
             icon: ImageIcon(AssetImage('assets/images/comment.png'))),
         IconButton(
             onPressed: null,
