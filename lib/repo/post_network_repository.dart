@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bottom_navigationbar/constants/firestore_keys.dart';
+import 'package:flutter_bottom_navigationbar/repo/helper/transformers.dart';
 
-class PostNetworkRepository {
+class PostNetworkRepository with Transformers {
   Future<void> createNewPost(
       String postKey, Map<String, dynamic> postData) async {
     final DocumentReference postRef =
@@ -30,6 +31,14 @@ class PostNetworkRepository {
     if (postSnapshot.exists) {
       await postRef.update({KEY_POSTIMG: postImg});
     }
+  }
+
+  Stream<void> getPostsFromSpecificUser(String userKey) {
+    return FirebaseFirestore.instance
+        .collection(COLLECTION_POSTS)
+        .where(KEY_USERKEY, isEqualTo: userKey)
+        .snapshots()
+        .transform(toPosts);
   }
 }
 

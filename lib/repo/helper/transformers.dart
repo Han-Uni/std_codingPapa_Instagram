@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bottom_navigationbar/models/firestore/post_model.dart';
 import 'package:flutter_bottom_navigationbar/models/firestore/user_model.dart';
 
 class Transformers {
@@ -22,5 +23,15 @@ class Transformers {
       }
     });
     sink.add(users);
+  });
+
+  final toPosts = StreamTransformer<QuerySnapshot<Map<String, dynamic>>,
+      List<PostModel>>.fromHandlers(handleData: (snapshot, sink) async {
+    List<PostModel> posts = [];
+
+    snapshot.docs.forEach((documentSnapshot) {
+      posts.add(PostModel.fromSnapshot(documentSnapshot));
+    });
+    sink.add(posts);
   });
 }

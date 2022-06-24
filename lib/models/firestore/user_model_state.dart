@@ -11,7 +11,9 @@ class UserModelState extends ChangeNotifier {
   StreamSubscription<UserModel>? get currentStreamSub => _currentStreamSub;
 
   set userModel(UserModel userModel) {
+    // if (_userModel == null)
     _userModel = userModel;
+
     notifyListeners();
   }
 
